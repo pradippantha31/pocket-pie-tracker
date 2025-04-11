@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PlusCircle, ArrowUpRight, CalendarIcon, Filter } from "lucide-react";
@@ -10,6 +10,7 @@ import { IncomeCategoryChart } from "@/components/dashboard/IncomeCategoryChart"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
+import { useToast } from "@/hooks/use-toast";
 
 interface Income {
   id: string;
@@ -64,9 +65,35 @@ const dummyIncomes: Income[] = [
 ];
 
 export default function IncomePage() {
-  const [incomes, setIncomes] = useState<Income[]>(dummyIncomes);
+  const [incomes, setIncomes] = useState<Income[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [category, setCategory] = useState<string>("");
+  const { toast } = useToast();
+
+  useEffect(() => {
+    // Simulate data fetching with error handling
+    const fetchIncomes = () => {
+      setIsLoading(true);
+      try {
+        // In a real app, you'd fetch from an API
+        // For now, we'll use the dummy data
+        setIncomes(dummyIncomes);
+      } catch (error) {
+        console.error("Error fetching income data:", error);
+        toast({
+          title: "Error",
+          description: "Failed to load income data. Please try again later.",
+          variant: "destructive",
+        });
+        setIncomes([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchIncomes();
+  }, [toast]);
 
   const filteredIncomes = incomes.filter((income) => {
     const dateMatch = date ? income.date === format(date, "yyyy-MM-dd") : true;
@@ -81,6 +108,13 @@ export default function IncomePage() {
     setCategory("");
   };
 
+  const handleAddIncome = () => {
+    toast({
+      title: "Feature Coming Soon",
+      description: "Add Income functionality will be available after deployment.",
+    });
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -88,7 +122,7 @@ export default function IncomePage() {
           <h2 className="text-3xl font-bold tracking-tight">Income</h2>
           <p className="text-muted-foreground">Track and manage your income sources.</p>
         </div>
-        <Button>
+        <Button onClick={handleAddIncome}>
           <PlusCircle className="mr-2 h-4 w-4" />
           Add Income
         </Button>
@@ -149,41 +183,47 @@ export default function IncomePage() {
                 Reset Filters
               </Button>
             </div>
-            <div className="space-y-4">
-              {filteredIncomes.length === 0 ? (
-                <div className="text-center py-4 text-sm text-muted-foreground">
-                  No income entries found.
-                </div>
-              ) : (
-                filteredIncomes.map((income) => (
-                  <div
-                    key={income.id}
-                    className="flex items-center justify-between border-b py-3 last:border-0"
-                  >
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <div className="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center text-green-600">
-                          <ArrowUpRight className="h-4 w-4" />
-                        </div>
-                        <div>
-                          <p className="font-medium">{income.source}</p>
-                          <p className="text-xs text-muted-foreground">
-                            {income.category} • {new Date(income.date).toLocaleDateString()}
-                          </p>
-                        </div>
-                      </div>
-                      <p className="mt-1 text-sm text-muted-foreground">{income.description}</p>
-                    </div>
-                    <p className="font-semibold text-green-600">
-                      +{new Intl.NumberFormat("en-US", {
-                        style: "currency",
-                        currency: "USD",
-                      }).format(income.amount)}
-                    </p>
+            {isLoading ? (
+              <div className="flex justify-center py-8">
+                <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {filteredIncomes.length === 0 ? (
+                  <div className="text-center py-4 text-sm text-muted-foreground">
+                    No income entries found.
                   </div>
-                ))
-              )}
-            </div>
+                ) : (
+                  filteredIncomes.map((income) => (
+                    <div
+                      key={income.id}
+                      className="flex items-center justify-between border-b py-3 last:border-0"
+                    >
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <div className="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+                            <ArrowUpRight className="h-4 w-4" />
+                          </div>
+                          <div>
+                            <p className="font-medium">{income.source}</p>
+                            <p className="text-xs text-muted-foreground">
+                              {income.category} • {new Date(income.date).toLocaleDateString()}
+                            </p>
+                          </div>
+                        </div>
+                        <p className="mt-1 text-sm text-muted-foreground">{income.description}</p>
+                      </div>
+                      <p className="font-semibold text-green-600">
+                        +{new Intl.NumberFormat("en-US", {
+                          style: "currency",
+                          currency: "USD",
+                        }).format(income.amount)}
+                      </p>
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
           </CardContent>
         </Card>
         <IncomeCategoryChart />

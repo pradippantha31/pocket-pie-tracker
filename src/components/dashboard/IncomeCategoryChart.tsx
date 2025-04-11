@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
 
 interface IncomeCategory {
   name: string;
@@ -23,11 +24,32 @@ const dummyIncomeCategories: IncomeCategory[] = [
 export function IncomeCategoryChart() {
   const [categories, setCategories] = useState<IncomeCategory[]>([]);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
 
   useEffect(() => {
-    // In a real app, you'd fetch this data from your API
-    setCategories(dummyIncomeCategories);
-  }, []);
+    const fetchData = () => {
+      setIsLoading(true);
+      try {
+        // In a real app, you'd fetch this data from your API
+        setTimeout(() => {
+          setCategories(dummyIncomeCategories);
+          setIsLoading(false);
+        }, 800); // Simulate network delay
+      } catch (error) {
+        console.error("Error fetching category data:", error);
+        toast({
+          title: "Error",
+          description: "Failed to load income categories. Please try again later.",
+          variant: "destructive",
+        });
+        setCategories([]);
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [toast]);
 
   const onPieEnter = (_: any, index: number) => {
     setActiveIndex(index);
@@ -92,38 +114,48 @@ export function IncomeCategoryChart() {
       </CardHeader>
       <CardContent>
         <div className="h-80">
-          <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Pie
-                data={categories}
-                cx="50%"
-                cy="50%"
-                labelLine={false}
-                label={renderCustomizedLabel}
-                outerRadius={90}
-                fill="#8884d8"
-                dataKey="value"
-                onMouseEnter={onPieEnter}
-                onMouseLeave={onPieLeave}
-              >
-                {categories.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={entry.color}
-                    stroke={activeIndex === index ? "#fff" : "none"}
-                    strokeWidth={activeIndex === index ? 2 : 0}
-                  />
-                ))}
-              </Pie>
-              <Tooltip content={<CustomTooltip />} />
-              <Legend
-                layout="vertical"
-                verticalAlign="middle"
-                align="right"
-                wrapperStyle={{ paddingLeft: "20px" }}
-              />
-            </PieChart>
-          </ResponsiveContainer>
+          {isLoading ? (
+            <div className="h-full flex items-center justify-center">
+              <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+            </div>
+          ) : categories.length === 0 ? (
+            <div className="h-full flex items-center justify-center text-muted-foreground">
+              No data available
+            </div>
+          ) : (
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={categories}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  label={renderCustomizedLabel}
+                  outerRadius={90}
+                  fill="#8884d8"
+                  dataKey="value"
+                  onMouseEnter={onPieEnter}
+                  onMouseLeave={onPieLeave}
+                >
+                  {categories.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={entry.color}
+                      stroke={activeIndex === index ? "#fff" : "none"}
+                      strokeWidth={activeIndex === index ? 2 : 0}
+                    />
+                  ))}
+                </Pie>
+                <Tooltip content={<CustomTooltip />} />
+                <Legend
+                  layout="vertical"
+                  verticalAlign="middle"
+                  align="right"
+                  wrapperStyle={{ paddingLeft: "20px" }}
+                />
+              </PieChart>
+            </ResponsiveContainer>
+          )}
         </div>
       </CardContent>
     </Card>
