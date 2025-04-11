@@ -6,7 +6,15 @@ import { ArrowRight } from "lucide-react";
 
 const Index = () => {
   const navigate = useNavigate();
-  const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+  
+  const isAuthenticated = (() => {
+    try {
+      return localStorage.getItem("isAuthenticated") === "true";
+    } catch (error) {
+      console.error("Unable to access localStorage:", error);
+      return false;
+    }
+  })();
 
   useEffect(() => {
     // If user is already authenticated, redirect to dashboard
@@ -79,6 +87,6 @@ const Index = () => {
       </div>
     </div>
   );
-};
+}
 
 export default Index;

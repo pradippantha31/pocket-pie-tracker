@@ -4,12 +4,21 @@ import { useNavigate } from "react-router-dom";
 
 export default function NotFound() {
   const navigate = useNavigate();
-  const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+  
+  const isAuthenticated = (() => {
+    try {
+      return localStorage.getItem("isAuthenticated") === "true";
+    } catch (error) {
+      console.error("Unable to access localStorage:", error);
+      return false;
+    }
+  })();
 
   const handleGoHome = () => {
     try {
       navigate(isAuthenticated ? "/dashboard" : "/");
     } catch (error) {
+      console.error("Navigation failed:", error);
       // Fallback if navigation fails
       window.location.href = isAuthenticated ? "/dashboard" : "/";
     }
