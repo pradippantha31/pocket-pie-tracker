@@ -25,12 +25,24 @@ export function RegisterForm() {
     setTimeout(() => {
       setIsLoading(false);
       
-      toast({
-        title: "Account created!",
-        description: "You have successfully registered an account.",
-      });
-      
-      navigate("/login");
+      try {
+        // In a real app, you'd store this in a database
+        // We could store it in localStorage for demo purposes, but we don't need to
+        
+        toast({
+          title: "Account created!",
+          description: "You have successfully registered an account.",
+        });
+        
+        navigate("/login");
+      } catch (error) {
+        console.error("Registration error:", error);
+        toast({
+          title: "Registration Error",
+          description: "Could not complete registration. Please try again.",
+          variant: "destructive",
+        });
+      }
     }, 1000);
   };
 

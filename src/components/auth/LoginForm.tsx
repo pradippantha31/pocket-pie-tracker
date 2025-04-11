@@ -23,21 +23,31 @@ export function LoginForm() {
     // Simulate login
     setTimeout(() => {
       setIsLoading(false);
-      // Mock successful login
-      localStorage.setItem("isAuthenticated", "true");
-      localStorage.setItem("user", JSON.stringify({ 
-        id: "1", 
-        email, 
-        name: email.split("@")[0],
-        role: email === "admin@example.com" ? "admin" : "user" 
-      }));
       
-      toast({
-        title: "Success!",
-        description: "You have successfully logged in",
-      });
-      
-      navigate("/dashboard");
+      try {
+        // Mock successful login
+        localStorage.setItem("isAuthenticated", "true");
+        localStorage.setItem("user", JSON.stringify({ 
+          id: "1", 
+          email, 
+          name: email.split("@")[0],
+          role: email === "admin@example.com" ? "admin" : "user" 
+        }));
+        
+        toast({
+          title: "Success!",
+          description: "You have successfully logged in",
+        });
+        
+        navigate("/dashboard");
+      } catch (error) {
+        console.error("Unable to access localStorage:", error);
+        toast({
+          title: "Login Error",
+          description: "Could not save your session. Cookies may be disabled.",
+          variant: "destructive",
+        });
+      }
     }, 1000);
   };
 

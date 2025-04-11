@@ -8,9 +8,15 @@ export function DashboardLayout() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
-    // Check if the user is authenticated
-    const auth = localStorage.getItem("isAuthenticated") === "true";
-    setIsAuthenticated(auth);
+    // Safely check if localStorage is available
+    try {
+      const auth = localStorage.getItem("isAuthenticated") === "true";
+      setIsAuthenticated(auth);
+    } catch (error) {
+      console.error("Unable to access localStorage:", error);
+      // Default to not authenticated when localStorage is unavailable
+      setIsAuthenticated(false);
+    }
   }, []);
 
   // Show loading state while checking authentication

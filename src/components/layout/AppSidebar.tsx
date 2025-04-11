@@ -35,21 +35,36 @@ export function AppSidebar() {
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
-    const userJson = localStorage.getItem("user");
-    if (userJson) {
-      setUser(JSON.parse(userJson));
+    try {
+      const userJson = localStorage.getItem("user");
+      if (userJson) {
+        setUser(JSON.parse(userJson));
+      }
+    } catch (error) {
+      console.error("Unable to access localStorage:", error);
+      // Set default user data when localStorage is unavailable
+      setUser({ name: "User", email: "user@example.com", role: "user" });
     }
   }, []);
 
   const handleLogout = () => {
-    // Clear auth in localStorage
-    localStorage.removeItem("isAuthenticated");
-    localStorage.removeItem("user");
-    
-    toast({
-      title: "Logged out",
-      description: "You have been logged out successfully.",
-    });
+    try {
+      // Clear auth in localStorage
+      localStorage.removeItem("isAuthenticated");
+      localStorage.removeItem("user");
+      
+      toast({
+        title: "Logged out",
+        description: "You have been logged out successfully.",
+      });
+    } catch (error) {
+      console.error("Unable to access localStorage:", error);
+      toast({
+        title: "Error",
+        description: "Unable to complete logout process.",
+        variant: "destructive",
+      });
+    }
     
     navigate("/login");
   };
@@ -74,7 +89,7 @@ export function AppSidebar() {
         <SidebarContent>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild active={isActive("/dashboard")}>
+              <SidebarMenuButton asChild isActive={isActive("/dashboard")}>
                 <Link to="/dashboard" className="flex items-center">
                   <Home className="mr-2 h-4 w-4" />
                   <span>Dashboard</span>
@@ -82,7 +97,7 @@ export function AppSidebar() {
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild active={isActive("/income")}>
+              <SidebarMenuButton asChild isActive={isActive("/income")}>
                 <Link to="/income" className="flex items-center">
                   <CircleDollarSign className="mr-2 h-4 w-4" />
                   <span>Income</span>
@@ -90,7 +105,7 @@ export function AppSidebar() {
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild active={isActive("/expenses")}>
+              <SidebarMenuButton asChild isActive={isActive("/expenses")}>
                 <Link to="/expenses" className="flex items-center">
                   <CreditCard className="mr-2 h-4 w-4" />
                   <span>Expenses</span>
@@ -98,7 +113,7 @@ export function AppSidebar() {
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild active={isActive("/reports")}>
+              <SidebarMenuButton asChild isActive={isActive("/reports")}>
                 <Link to="/reports" className="flex items-center">
                   <BarChart4 className="mr-2 h-4 w-4" />
                   <span>Reports</span>
@@ -106,7 +121,7 @@ export function AppSidebar() {
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild active={isActive("/groups")}>
+              <SidebarMenuButton asChild isActive={isActive("/groups")}>
                 <Link to="/groups" className="flex items-center">
                   <Users2 className="mr-2 h-4 w-4" />
                   <span>Group Expenses</span>
@@ -114,7 +129,7 @@ export function AppSidebar() {
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild active={isActive("/add")}>
+              <SidebarMenuButton asChild isActive={isActive("/add")}>
                 <Link to="/add" className="flex items-center">
                   <PlusCircle className="mr-2 h-4 w-4" />
                   <span>Add Transaction</span>
@@ -127,7 +142,7 @@ export function AppSidebar() {
                   <div className="pl-4 mb-2 text-xs font-semibold text-muted-foreground">ADMIN</div>
                 </SidebarMenuItem>
                 <SidebarMenuItem>
-                  <SidebarMenuButton asChild active={isActive("/admin/users")}>
+                  <SidebarMenuButton asChild isActive={isActive("/admin/users")}>
                     <Link to="/admin/users" className="flex items-center">
                       <Users className="mr-2 h-4 w-4" />
                       <span>User Management</span>
@@ -135,7 +150,7 @@ export function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
                 <SidebarMenuItem>
-                  <SidebarMenuButton asChild active={isActive("/admin/reports")}>
+                  <SidebarMenuButton asChild isActive={isActive("/admin/reports")}>
                     <Link to="/admin/reports" className="flex items-center">
                       <FileBarChart2 className="mr-2 h-4 w-4" />
                       <span>Admin Reports</span>
