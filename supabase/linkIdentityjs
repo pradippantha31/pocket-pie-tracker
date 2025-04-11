@@ -1,4 +1,29 @@
-const { data, error } = await supabase.auth.linkIdentity({ provider: 'google' })
-const { data, error } = await supabase.auth.linkIdentity({
-  provider: 'github'
-})
+// Import and initialize Supabase
+import { createClient } from '@supabase/supabase-js';
+
+// Replace with your Supabase project URL and public API key
+const supabase = createClient('https://your-project.supabase.co', 'your-public-api-key');
+
+// Function to link identity
+async function linkIdentity(provider) {
+  try {
+    const { data, error } = await supabase.auth.linkIdentity({ provider });
+    if (error) {
+      console.error('Error linking identity:', error.message);
+      return;
+    }
+    console.log('Identity linked successfully:', data);
+  } catch (err) {
+    console.error('Unexpected error:', err);
+  }
+}
+
+// Example usage: Link Google account
+document.getElementById('link-google').addEventListener('click', () => {
+  linkIdentity('google');
+});
+
+// Example usage: Link GitHub account
+document.getElementById('link-github').addEventListener('click', () => {
+  linkIdentity('github');
+});
