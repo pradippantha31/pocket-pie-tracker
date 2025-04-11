@@ -74,7 +74,7 @@ export function AppSidebar() {
         <SidebarContent>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild isActive={isActive("/dashboard")}>
+              <SidebarMenuButton asChild active={isActive("/dashboard")}>
                 <Link to="/dashboard" className="flex items-center">
                   <Home className="mr-2 h-4 w-4" />
                   <span>Dashboard</span>
@@ -82,7 +82,7 @@ export function AppSidebar() {
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild isActive={isActive("/income")}>
+              <SidebarMenuButton asChild active={isActive("/income")}>
                 <Link to="/income" className="flex items-center">
                   <CircleDollarSign className="mr-2 h-4 w-4" />
                   <span>Income</span>
@@ -90,7 +90,7 @@ export function AppSidebar() {
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild isActive={isActive("/expenses")}>
+              <SidebarMenuButton asChild active={isActive("/expenses")}>
                 <Link to="/expenses" className="flex items-center">
                   <CreditCard className="mr-2 h-4 w-4" />
                   <span>Expenses</span>
@@ -98,7 +98,7 @@ export function AppSidebar() {
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild isActive={isActive("/reports")}>
+              <SidebarMenuButton asChild active={isActive("/reports")}>
                 <Link to="/reports" className="flex items-center">
                   <BarChart4 className="mr-2 h-4 w-4" />
                   <span>Reports</span>
@@ -106,7 +106,7 @@ export function AppSidebar() {
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild isActive={isActive("/groups")}>
+              <SidebarMenuButton asChild active={isActive("/groups")}>
                 <Link to="/groups" className="flex items-center">
                   <Users2 className="mr-2 h-4 w-4" />
                   <span>Group Expenses</span>
@@ -114,7 +114,7 @@ export function AppSidebar() {
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild isActive={isActive("/add")}>
+              <SidebarMenuButton asChild active={isActive("/add")}>
                 <Link to="/add" className="flex items-center">
                   <PlusCircle className="mr-2 h-4 w-4" />
                   <span>Add Transaction</span>
@@ -127,7 +127,7 @@ export function AppSidebar() {
                   <div className="pl-4 mb-2 text-xs font-semibold text-muted-foreground">ADMIN</div>
                 </SidebarMenuItem>
                 <SidebarMenuItem>
-                  <SidebarMenuButton asChild isActive={isActive("/admin/users")}>
+                  <SidebarMenuButton asChild active={isActive("/admin/users")}>
                     <Link to="/admin/users" className="flex items-center">
                       <Users className="mr-2 h-4 w-4" />
                       <span>User Management</span>
@@ -135,7 +135,7 @@ export function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
                 <SidebarMenuItem>
-                  <SidebarMenuButton asChild isActive={isActive("/admin/reports")}>
+                  <SidebarMenuButton asChild active={isActive("/admin/reports")}>
                     <Link to="/admin/reports" className="flex items-center">
                       <FileBarChart2 className="mr-2 h-4 w-4" />
                       <span>Admin Reports</span>
