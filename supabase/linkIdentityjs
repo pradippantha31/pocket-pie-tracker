@@ -2,7 +2,7 @@
 import { createClient } from '@supabase/supabase-js';
 
 // Replace with your Supabase project URL and public API key
-const supabase = createClient('https://your-project.supabase.co', 'your-public-api-key');
+const supabase = createClient('https://iocvolayzhexnkcxktou.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlvY3ZvbGF5emhleG5rY3hrdG91Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQzODE5OTksImV4cCI6MjA1OTk1Nzk5OX0.appcrGY058bi47io4MHsEmtWnY3oot0r2KnyTapfHJM');
 
 // Function to link identity
 async function linkIdentity(provider) {
