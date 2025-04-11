@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
@@ -79,9 +80,9 @@ export function AppSidebar() {
         <SidebarHeader className="px-6 py-3">
           <Link to="/dashboard" className="flex items-center gap-2">
             <div className="h-8 w-8 bg-primary rounded-md flex items-center justify-center">
-              <span className="text-white font-bold text-lg">FT</span>
+              <span className="text-white font-bold text-lg">ET</span>
             </div>
-            <span className="font-bold text-xl">FinTracker</span>
+            <span className="font-bold text-xl">Expenses Tracker</span>
           </Link>
         </SidebarHeader>
         <SidebarContent>

@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -28,7 +27,7 @@ const Index = () => {
       <div className="max-w-3xl mx-auto text-center">
         <div className="flex justify-center mb-6">
           <div className="h-16 w-16 bg-primary rounded-xl flex items-center justify-center">
-            <span className="text-white font-bold text-2xl">FT</span>
+            <span className="text-white font-bold text-2xl">ET</span>
           </div>
         </div>
         <h1 className="text-4xl md:text-6xl font-bold mb-6 text-gray-900">
