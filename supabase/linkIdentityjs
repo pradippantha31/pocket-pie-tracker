@@ -1,0 +1,4 @@
+const { data, error } = await supabase.auth.linkIdentity({ provider: 'google' })
+const { data, error } = await supabase.auth.linkIdentity({
+  provider: 'github'
+})
